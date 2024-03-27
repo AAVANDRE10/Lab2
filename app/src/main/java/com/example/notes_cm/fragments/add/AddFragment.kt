@@ -40,16 +40,27 @@ class AddFragment : Fragment() {
 
     private fun addNote() {
         val noteText = view?.findViewById<EditText>(R.id.addNote)?.text.toString()
+        val noteDescription = view?.findViewById<EditText>(R.id.addDescription)?.text.toString()
+        val noteDate = view?.findViewById<EditText>(R.id.addDate)?.text.toString()
 
         if(noteText.isEmpty()) {
-            Toast.makeText(view?.context, "Não pode uma nota vazia!", Toast.LENGTH_LONG).show()
+            Toast.makeText(view?.context, R.string.EmptyNoteMessage, Toast.LENGTH_LONG).show()
+        }
+        else if (noteDate.isEmpty()) {
+            Toast.makeText(view?.context, R.string.EmptyDateMessage, Toast.LENGTH_LONG).show()
+        }
+        else if (noteDescription.isEmpty()) {
+            Toast.makeText(view?.context, R.string.EmptyDescriptionMessage, Toast.LENGTH_LONG).show()
+        }
+        else if (noteDescription.length < 5) {
+            Toast.makeText(view?.context, R.string.DescriptionLengthMessage, Toast.LENGTH_LONG).show()
         }
         else {
-            val note = Note(0, noteText)
+            val note = Note(0, noteText, noteDescription, noteDate)
 
             mNoteViewModel.addNote(note)
 
-            Toast.makeText(requireContext(), "Gravado com sucesso!", Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), R.string.NoteCreatedMessage, Toast.LENGTH_LONG).show()
             findNavController().navigate(R.id.action_addFragment_to_listFragment)
         }
     }
